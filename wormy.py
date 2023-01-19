@@ -23,6 +23,8 @@ RED       = (255,   0,   0)
 GREEN     = (  0, 255,   0)
 DARKGREEN = (  0, 155,   0)
 DARKGRAY  = ( 40,  40,  40)
+PURPLE    = (153,   0, 153)
+PINK      = (204,   0, 102)
 YELLOW = (255,255,0)
 BGCOLOR = BLACK
 
@@ -129,8 +131,8 @@ def checkForKeyPress():
 
 def showStartScreen():
     titleFont = pygame.font.Font('freesansbold.ttf', 100)
-    titleSurf1 = titleFont.render('Many', True, WHITE, DARKGREEN)
-    titleSurf2 = titleFont.render('Snek', True, GREEN)
+    titleSurf1 = titleFont.render('Many', True, BLACK, PURPLE)
+    titleSurf2 = titleFont.render('Snek', True, PINK)
 
     degrees1 = 0
     degrees2 = 0
