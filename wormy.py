@@ -7,9 +7,9 @@ import random, pygame, sys,math
 from pygame.locals import *
 
 FPS = 5
-WINDOWWIDTH = 640
-WINDOWHEIGHT = 480
 CELLSIZE = 20
+WINDOWWIDTH = 40 * CELLSIZE
+WINDOWHEIGHT = 30 * CELLSIZE
 RADIUS = math.floor(CELLSIZE/2.5)
 assert WINDOWWIDTH % CELLSIZE == 0, "Window width must be a multiple of cell size."
 assert WINDOWHEIGHT % CELLSIZE == 0, "Window height must be a multiple of cell size."
