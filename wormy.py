@@ -40,7 +40,7 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     BASICFONT = pygame.font.Font('freesansbold.ttf', 18)
-    pygame.display.set_caption('Wormy')
+    pygame.display.set_caption('Snek knock off')
 
     showStartScreen()
     while True:
@@ -129,8 +129,8 @@ def checkForKeyPress():
 
 def showStartScreen():
     titleFont = pygame.font.Font('freesansbold.ttf', 100)
-    titleSurf1 = titleFont.render('USU', True, WHITE, DARKGREEN)
-    titleSurf2 = titleFont.render('Agents', True, GREEN)
+    titleSurf1 = titleFont.render('Many', True, WHITE, DARKGREEN)
+    titleSurf2 = titleFont.render('Snek', True, GREEN)
 
     degrees1 = 0
     degrees2 = 0
