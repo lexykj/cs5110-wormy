@@ -89,13 +89,17 @@ def runGame():
             if wormBody['x'] == wormCoords[HEAD]['x'] and wormBody['y'] == wormCoords[HEAD]['y']:
                 return # game over
 
-        # check if worm has eaten an apply
+        # check if worm has eaten an apple
+        ateApple = False
+
         for i in range(len(appleList)):
             if wormCoords[HEAD]['x'] == appleList[i]['x'] and wormCoords[HEAD]['y'] == appleList[i]['y']:
                 # don't remove worm's tail segment
                 appleList[i] = getRandomLocation() # set a new apple somewhere
-            else:
-                del wormCoords[-1] # remove worm's tail segment
+                ateApple = True
+
+        if not ateApple:
+            del wormCoords[-1] # remove worm's tail segment
 
         # move the worm by adding a segment in the direction it is moving
         if direction == UP:
