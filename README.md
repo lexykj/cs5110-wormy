@@ -1,10 +1,10 @@
 # cs5110-wormy
 Assignment 1 - wormy
 
-- [ ] a) Change the name of the game  (which displays at the beginning) to be something new.
-- [ ] b) Change the colors that display at the beginning.
-- [ ] c) Use a grid with more cells.
-- [ ] d) Have multiple apples on the grid.  New apples will be generated as they are eaten.  
+- [x] a) Change the name of the game  (which displays at the beginning) to be something new.
+- [x] b) Change the colors that display at the beginning.
+- [x] c) Use a grid with more cells.
+- [x] d) Have multiple apples on the grid.  New apples will be generated as they are eaten.  
 - [ ] e) Allow the user(s) to control two worms using the arrow keys (for one worm) and four other keys (for the 
 other worm). The keypad arrow keys will be used to move both worms in the same direction at the 
 same time.  The keypad arrow key names are K_KP2, K_KP4,  K_KP6, and K_KP8.
