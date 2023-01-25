@@ -30,6 +30,8 @@ PINK      = (204,   0, 102)
 YELLOW = (255,255,0)
 BGCOLOR = BLACK
 
+WORMCOLORS = [[DARKGREEN, GREEN], [PURPLE, PINK]]
+
 UP = 'up'
 DOWN = 'down'
 LEFT = 'left'
@@ -59,16 +61,19 @@ def runGame():
     wormCoords = []
     direction = []
     ateApple = []
+    isDead = []
 
     for i in range(WORMCOUNT):
         startx.append(random.randint(5, CELLWIDTH - 6))
         starty.append(random.randint(5, CELLHEIGHT - 6))
 
-        wormCoords.append( [{'x': startx[0],     'y': starty[0]},
-                            {'x': startx[0] - 1, 'y': starty[0]},
-                            {'x': startx[0] - 2, 'y': starty[0]}])
+        wormCoords.append( [{'x': startx[i],     'y': starty[i]},
+                            {'x': startx[i] - 1, 'y': starty[i]},
+                            {'x': startx[i] - 2, 'y': starty[i]}])
         direction.append(RIGHT)
         ateApple.append(False)
+        isDead.append(False)
+
 
     # Start the apple in a random place.
     appleList = []
@@ -121,12 +126,19 @@ def runGame():
                     terminate()
 
         # check if the worm has hit itself or the edge
-        for worm in wormCoords:
-            if worm[HEAD]['x'] == -1 or worm[HEAD]['x'] == CELLWIDTH or worm[HEAD]['y'] == -1 or worm[HEAD]['y'] == CELLHEIGHT:
-                return # game over
-            for wormBody in worm[1:]:
-                if wormBody['x'] == worm[HEAD]['x'] and wormBody['y'] == worm[HEAD]['y']:
-                    return # game over
+        for i in range(WORMCOUNT):
+            if isDead[i]:
+                continue
+            if wormCoords[i][HEAD]['x'] == -1 or wormCoords[i][HEAD]['x'] == CELLWIDTH or wormCoords[i][HEAD]['y'] == -1 or wormCoords[i][HEAD]['y'] == CELLHEIGHT:
+                isDead[i] = True # game over for that worm
+            for worm in wormCoords:
+                for wormBody in worm[1:]:
+                    if wormBody['x'] == wormCoords[i][HEAD]['x'] and wormBody['y'] == wormCoords[i][HEAD]['y']:
+                        isDead[i] = True # game over for that worm
+
+        if isDead[0] and isDead[1]:
+            return # game over for all
+
 
         # check if worm has eaten an apple
 
@@ -138,12 +150,14 @@ def runGame():
                     ateApple[j] = True
 
         for i in range(WORMCOUNT):
-            if not ateApple[i]:
+            if not ateApple[i] and not isDead[i]:
                 del wormCoords[i][-1] # remove worm's tail segment
             ateApple[i] = False
 
         # move the worm by adding a segment in the direction it is moving
         for i in range(WORMCOUNT):
+            if isDead[i]:
+                continue
             if direction[i] == UP:
                 newHead = {'x': wormCoords[i][HEAD]['x'], 'y': wormCoords[i][HEAD]['y'] - 1}
             elif direction[i] == DOWN:
@@ -157,8 +171,8 @@ def runGame():
         DISPLAYSURF.fill(BGCOLOR)
         drawGrid()
 
-        for worm in wormCoords:
-            drawWorm(worm)
+        for i in range(WORMCOUNT):
+            drawWorm(wormCoords[i], i)
 
         for apple in appleList:
             drawApple(apple)
@@ -254,14 +268,14 @@ def drawScore(score, offset):
     DISPLAYSURF.blit(scoreSurf, scoreRect)
 
 
-def drawWorm(wormCoords):
+def drawWorm(wormCoords, wormNum):
     for coord in wormCoords:
         x = coord['x'] * CELLSIZE
         y = coord['y'] * CELLSIZE
         wormSegmentRect = pygame.Rect(x, y, CELLSIZE, CELLSIZE)
-        pygame.draw.rect(DISPLAYSURF, DARKGREEN, wormSegmentRect)
+        pygame.draw.rect(DISPLAYSURF, WORMCOLORS[wormNum][0], wormSegmentRect)
         wormInnerSegmentRect = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
-        pygame.draw.rect(DISPLAYSURF, GREEN, wormInnerSegmentRect)
+        pygame.draw.rect(DISPLAYSURF, WORMCOLORS[wormNum][1], wormInnerSegmentRect)
 
 
 def drawApple(coord):
