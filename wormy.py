@@ -62,6 +62,8 @@ def runGame():
     direction = []
     ateApple = []
     isDead = []
+    appleList = []
+    stoneList = []
 
     for i in range(WORMCOUNT):
         startx.append(random.randint(5, CELLWIDTH - 6))
@@ -76,7 +78,6 @@ def runGame():
 
 
     # Start the apple in a random place.
-    appleList = []
     for i in range(APPLECOUNT):
         appleList.append(getRandomLocation())
     # apple = getRandomLocation()
@@ -131,10 +132,16 @@ def runGame():
                 continue
             if wormCoords[i][HEAD]['x'] == -1 or wormCoords[i][HEAD]['x'] == CELLWIDTH or wormCoords[i][HEAD]['y'] == -1 or wormCoords[i][HEAD]['y'] == CELLHEIGHT:
                 isDead[i] = True # game over for that worm
+                for coord in wormCoords[i]:
+                    stoneList.append(coord)
+                continue
             for worm in wormCoords:
                 for wormBody in worm[1:]:
                     if wormBody['x'] == wormCoords[i][HEAD]['x'] and wormBody['y'] == wormCoords[i][HEAD]['y']:
                         isDead[i] = True # game over for that worm
+                        for coord in wormCoords[i]:
+                            stoneList.append(coord)
+                        continue
 
         if isDead[0] and isDead[1]:
             return # game over for all
@@ -173,6 +180,8 @@ def runGame():
 
         for i in range(WORMCOUNT):
             drawWorm(wormCoords[i], i)
+
+        drawStones(stoneList)
 
         for apple in appleList:
             drawApple(apple)
@@ -286,6 +295,16 @@ def drawApple(coord):
     #appleRect = pygame.Rect(x, y, CELLSIZE, CELLSIZE)
     #pygame.draw.rect(DISPLAYSURF, RED, appleRect)
     pygame.draw.circle(DISPLAYSURF, RED,(xcenter,ycenter),RADIUS)
+
+
+def drawStones(stones):
+    for coord in stones:
+        x = coord['x'] * CELLSIZE
+        y = coord['y'] * CELLSIZE
+        wormSegmentRect = pygame.Rect(x, y, CELLSIZE, CELLSIZE)
+        pygame.draw.rect(DISPLAYSURF, DARKGRAY, wormSegmentRect)
+        wormInnerSegmentRect = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
+        pygame.draw.rect(DISPLAYSURF, WHITE, wormInnerSegmentRect)
 
 
 def drawGrid():
