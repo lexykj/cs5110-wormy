@@ -255,11 +255,15 @@ def runGame():
 
         for i in range(WORMCOUNT):
             drawWorm(wormCoords[i], i)
+            if isLaserRend[i]:
+                drawLaser(wormCoords[i][HEAD], direction[i])
+            isLaserRend[i] = False
 
         drawStones(stoneList)
 
         for apple in appleList:
             drawApple(apple)
+
 
         for i in range(WORMCOUNT):
             drawScore(len(wormCoords[i]) - 3, i)
@@ -386,7 +390,7 @@ def drawLaser(wormHead, direction):
     # loop from start (wormHead + 1)
     x = wormHead['x']
     y = wormHead['y']
-    if direction == UP:
+    if direction == DOWN:
         # x stays same, y increases
         # start the laser one above the head, y + 1
         laserX = x * CELLSIZE
@@ -395,7 +399,7 @@ def drawLaser(wormHead, direction):
             laserY = newY * CELLSIZE
             laserLineRect = pygame.Rect(laserX, laserY, CELLSIZE, CELLSIZE)
             pygame.draw.rect(DISPLAYSURF, RED, laserLineRect)
-    elif direction == DOWN:
+    elif direction == UP:
         # x stays the same, y decreases
         # start laser at edge and end below the head, (range does not include upper bound)
         laserX = x * CELLSIZE
