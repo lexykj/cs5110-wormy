@@ -5,7 +5,7 @@
 
 import random, pygame, sys,math
 from pygame.locals import *
-# a good test
+
 FPS = 5
 CELLSIZE = 20
 WINDOWWIDTH = 40 * CELLSIZE
