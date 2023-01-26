@@ -133,7 +133,7 @@ def runGame():
                     if(direction[0] == UP):
                         for i in range(len(wormCoords[1])):
                             targetSec = wormCoords[1][i]
-                            if (targetSec['y'] >= headSec['y']) and targetSec['x'] == headSec['x']:
+                            if (targetSec['y'] <= headSec['y']) and targetSec['x'] == headSec['x']:
                                 stoneList += wormCoords[1][i:]
                                 del wormCoords[1][i:]
                                 break
@@ -148,7 +148,7 @@ def runGame():
                     elif(direction[0] == DOWN):
                         for i in range(len(wormCoords[1])):
                             targetSec = wormCoords[1][i]
-                            if (targetSec['y'] <= headSec['y']) and targetSec['x'] == headSec['x']:
+                            if (targetSec['y'] >= headSec['y']) and targetSec['x'] == headSec['x']:
                                 stoneList += wormCoords[1][i:]
                                 del wormCoords[1][i:]
                                 break
@@ -170,7 +170,7 @@ def runGame():
                     if(direction[1] == UP):
                         for i in range(len(wormCoords[0])):
                             targetSec = wormCoords[0][i]
-                            if (targetSec['y'] >= headSec['y']) and targetSec['x'] == headSec['x']:
+                            if (targetSec['y'] <= headSec['y']) and targetSec['x'] == headSec['x']:
                                 stoneList += wormCoords[0][i:]
                                 del wormCoords[0][i:]
                                 break
@@ -185,7 +185,7 @@ def runGame():
                     elif(direction[1] == DOWN):
                         for i in range(len(wormCoords[0])):
                             targetSec = wormCoords[0][i]
-                            if (targetSec['y'] <= headSec['y']) and targetSec['x'] == headSec['x']:
+                            if (targetSec['y'] >= headSec['y']) and targetSec['x'] == headSec['x']:
                                 stoneList += wormCoords[0][i:]
                                 del wormCoords[0][i:]
                                 break
@@ -218,10 +218,12 @@ def runGame():
                         for coord in wormCoords[i]:
                             stoneList.append(coord)
                         continue
+            for stone in stoneList:
+                if stone['x'] == wormCoords[i][HEAD]['x'] and stone['y'] == wormCoords[i][HEAD]['y']:
+                    isDead[i] = True # game over for that worm
 
         if isDead[0] and isDead[1]:
             return # game over for all
-
 
         # check if worm has eaten an apple
         for i in range(APPLECOUNT):
@@ -254,7 +256,7 @@ def runGame():
         drawGrid()
 
         for i in range(WORMCOUNT):
-            drawWorm(wormCoords[i], i)
+            drawWorm(wormCoords[i], i, isDead[i])
             if isLaserRend[i]:
                 drawLaser(wormCoords[i][HEAD], direction[i])
             isLaserRend[i] = False
@@ -263,7 +265,6 @@ def runGame():
 
         for apple in appleList:
             drawApple(apple)
-
 
         for i in range(WORMCOUNT):
             drawScore(len(wormCoords[i]) - 3, i)
@@ -356,14 +357,20 @@ def drawScore(score, offset):
     DISPLAYSURF.blit(scoreSurf, scoreRect)
 
 
-def drawWorm(wormCoords, wormNum):
+def drawWorm(wormCoords, wormNum, isDead):
     for coord in wormCoords:
         x = coord['x'] * CELLSIZE
         y = coord['y'] * CELLSIZE
         wormSegmentRect = pygame.Rect(x, y, CELLSIZE, CELLSIZE)
-        pygame.draw.rect(DISPLAYSURF, WORMCOLORS[wormNum][0], wormSegmentRect)
+        if isDead:
+            pygame.draw.rect(DISPLAYSURF, DARKGRAY, wormSegmentRect)
+        else:
+            pygame.draw.rect(DISPLAYSURF, WORMCOLORS[wormNum][0], wormSegmentRect)
         wormInnerSegmentRect = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
-        pygame.draw.rect(DISPLAYSURF, WORMCOLORS[wormNum][1], wormInnerSegmentRect)
+        if isDead:
+            pygame.draw.rect(DISPLAYSURF, WHITE, wormInnerSegmentRect)
+        else:
+            pygame.draw.rect(DISPLAYSURF, WORMCOLORS[wormNum][1], wormInnerSegmentRect)
 
 
 def drawApple(coord):
