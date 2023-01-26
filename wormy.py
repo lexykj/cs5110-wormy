@@ -307,6 +307,48 @@ def drawStones(stones):
         pygame.draw.rect(DISPLAYSURF, WHITE, wormInnerSegmentRect)
 
 
+def drawLaser(wormHead, direction):
+    # loop from start (wormHead + 1)
+    x = wormHead['x']
+    y = wormHead['y']
+    if direction == UP:
+        # x stays same, y increases
+        # start the laser one above the head, y + 1
+        laserX = x * CELLSIZE
+        for newY in range(y + 1, CELLHEIGHT):
+            # draw the cells for the red line
+            laserY = newY * CELLSIZE
+            laserLineRect = pygame.Rect(laserX, laserY, CELLSIZE, CELLSIZE)
+            pygame.draw.rect(DISPLAYSURF, RED, laserLineRect)
+    elif direction == DOWN:
+        # x stays the same, y decreases
+        # start laser at edge and end below the head, (range does not include upper bound)
+        laserX = x * CELLSIZE
+        for newY in range(0, y):
+            # draw the cells for the red line
+            laserY = newY * CELLSIZE
+            laserLineRect = pygame.Rect(laserX, laserY, CELLSIZE, CELLSIZE)
+            pygame.draw.rect(DISPLAYSURF, RED, laserLineRect)
+    elif direction == LEFT:
+        # y stays the same, x decreases
+        # start laser at edge and end before the head, (range does not include upper bound)
+        laserY = y * CELLSIZE
+        for newX in range(0, x):
+            # draw the cells for the red line
+            laserX = newX * CELLSIZE
+            laserLineRect = pygame.Rect(laserX, laserY, CELLSIZE, CELLSIZE)
+            pygame.draw.rect(DISPLAYSURF, RED, laserLineRect)
+    elif direction == RIGHT:
+        # y stays the same, x increases
+        # start laser one after head and end at edge
+        laserY = y * CELLSIZE
+        for newX in range(x + 1, CELLWIDTH):
+            # draw the cells for the red line
+            laserX = newX * CELLSIZE
+            laserLineRect = pygame.Rect(laserX, laserY, CELLSIZE, CELLSIZE)
+            pygame.draw.rect(DISPLAYSURF, RED, laserLineRect)
+
+
 def drawGrid():
     for x in range(0, WINDOWWIDTH, CELLSIZE): # draw vertical lines
         pygame.draw.line(DISPLAYSURF, DARKGRAY, (x, 0), (x, WINDOWHEIGHT))
