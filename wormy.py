@@ -64,6 +64,8 @@ def runGame():
     isDead = []
     appleList = []
     stoneList = []
+    isLaserRend = [False, False]
+    sliceWormList = []
 
     for i in range(WORMCOUNT):
         startx.append(random.randint(5, CELLWIDTH - 6))
@@ -123,6 +125,80 @@ def runGame():
                         if direction[i] != UP:
                             direction[i] = DOWN
 
+                elif event.key == K_m: # player 0 laser
+                    isLaserRend[0] = True
+                    headSec = wormCoords[0][HEAD]
+                    targetSec = wormCoords[1][0]
+
+                    if(direction[0] == UP):
+                        for i in range(len(wormCoords[1])):
+                            targetSec = wormCoords[1][i]
+                            if (targetSec['y'] >= headSec['y']) and targetSec['x'] == headSec['x']:
+                                stoneList += wormCoords[1][i:]
+                                del wormCoords[1][i:]
+                                break
+                    elif(direction[0] == RIGHT):
+                        for i in range(len(wormCoords[1])):
+                            targetSec = wormCoords[1][i]
+                            if (targetSec['x'] >= headSec['x']) and targetSec['y'] == headSec['y']:
+                                stoneList += wormCoords[1][i:]
+                                del wormCoords[1][i:]
+                                break
+
+                    elif(direction[0] == DOWN):
+                        for i in range(len(wormCoords[1])):
+                            targetSec = wormCoords[1][i]
+                            if (targetSec['y'] <= headSec['y']) and targetSec['x'] == headSec['x']:
+                                stoneList += wormCoords[1][i:]
+                                del wormCoords[1][i:]
+                                break
+
+                    elif(direction[0] == LEFT):
+                        for i in range(len(wormCoords[1])):
+                            targetSec = wormCoords[1][i]
+                            if (targetSec['x'] <= headSec['x']) and targetSec['y'] == headSec['y']:
+                                stoneList += wormCoords[1][i:]
+                                del wormCoords[1][i:]
+                                break
+
+
+                elif event.key == K_q: # player 1 laser
+                    isLaserRend[1] = True
+                    headSec = wormCoords[1][HEAD]
+                    targetSec = wormCoords[0][0] # target worm 0
+
+                    if(direction[1] == UP):
+                        for i in range(len(wormCoords[0])):
+                            targetSec = wormCoords[0][i]
+                            if (targetSec['y'] >= headSec['y']) and targetSec['x'] == headSec['x']:
+                                stoneList += wormCoords[0][i:]
+                                del wormCoords[0][i:]
+                                break
+                    elif(direction[1] == RIGHT):
+                        for i in range(len(wormCoords[0])):
+                            targetSec = wormCoords[0][i]
+                            if (targetSec['x'] >= headSec['x']) and targetSec['y'] == headSec['y']:
+                                stoneList += wormCoords[0][i:]
+                                del wormCoords[0][i:]
+                                break
+
+                    elif(direction[1] == DOWN):
+                        for i in range(len(wormCoords[0])):
+                            targetSec = wormCoords[0][i]
+                            if (targetSec['y'] <= headSec['y']) and targetSec['x'] == headSec['x']:
+                                stoneList += wormCoords[0][i:]
+                                del wormCoords[0][i:]
+                                break
+
+                    elif(direction[1] == LEFT):
+                        for i in range(len(wormCoords[0])):
+                            targetSec = wormCoords[0][i]
+                            if (targetSec['x'] <= headSec['x']) and targetSec['y'] == headSec['y']:
+                                stoneList += wormCoords[0][i:]
+                                del wormCoords[0][i:]
+                                break
+
+
                 elif event.key == K_ESCAPE:
                     terminate()
 
@@ -148,7 +224,6 @@ def runGame():
 
 
         # check if worm has eaten an apple
-
         for i in range(APPLECOUNT):
             for j in range(WORMCOUNT):
                 if wormCoords[j][HEAD]['x'] == appleList[i]['x'] and wormCoords[j][HEAD]['y'] == appleList[i]['y']:
